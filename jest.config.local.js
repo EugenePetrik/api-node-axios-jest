@@ -4,6 +4,10 @@ module.exports = {
   testEnvironment: 'node',
   reporters: [
     'default',
+    ['./node_modules/jest-html-reporter', {
+      'pageTitle': 'JSON Placeholder Test Report',
+      'outputPath': './reports/test-report.html',
+    }],
   ],
   moduleFileExtensions: [
     'js',
