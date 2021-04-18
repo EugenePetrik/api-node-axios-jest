@@ -1,4 +1,7 @@
-import Users from '../api/users.controller';
+import Ajv from 'ajv';
+import Users from '../lib/users.controller';
+import { getAjvErrors } from '../utils/getAjvErrors';
+const usersSchema = require('../data/jsonSchema/users');
 
 describe('JSON Placeholder', () => {
   describe('Users', () => {
@@ -20,6 +23,15 @@ describe('JSON Placeholder', () => {
   
     test('should return response body', async () => {
       expect(response.data.length).toBeGreaterThan(0);
+    });
+
+    test('should have valid JSON schema', async () => {
+      const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
+
+      const valid = ajv.validate(usersSchema, response.data);
+      const errorMessage = getAjvErrors(ajv.errors);
+
+      expect(valid).toBeValid(errorMessage);
     });
   });
 });

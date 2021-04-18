@@ -16,4 +16,7 @@ module.exports = {
     testTimeout: 50000,
   },
   verbose: true,
+  setupFilesAfterEnv: [
+    './utils/setupJest.js'
+  ],
 };
