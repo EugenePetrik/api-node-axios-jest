@@ -4,7 +4,7 @@ import { getAjvErrors } from '../../utils/getAjvErrors';
 
 import '../../utils/getRandomArrayItem';
 
-const userAlbumsSchema = require('../../data/jsonSchema/userAlbums');
+const userAlbumsSchema = require('../../data/jsonSchema/users/userAlbums');
 
 describe('JSON Placeholder', () => {
   let response = null;

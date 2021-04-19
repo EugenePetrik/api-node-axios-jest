@@ -2,7 +2,7 @@ import Ajv from 'ajv';
 import Users from '../../lib/users.controller';
 import { getAjvErrors } from '../../utils/getAjvErrors';
 
-const usersSchema = require('../../data/jsonSchema/users');
+const usersSchema = require('../../data/jsonSchema/users/users');
 
 describe('JSON Placeholder', () => {
   let response = null;

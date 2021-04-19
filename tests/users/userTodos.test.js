@@ -4,7 +4,7 @@ import { getAjvErrors } from '../../utils/getAjvErrors';
 
 import '../../utils/getRandomArrayItem';
 
-const userTodosSchema = require('../../data/jsonSchema/userTodos');
+const userTodosSchema = require('../../data/jsonSchema/users/userTodos');
 
 describe('JSON Placeholder', () => {
   let response = null;
