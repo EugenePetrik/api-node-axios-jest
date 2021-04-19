@@ -4,19 +4,19 @@ import { getAjvErrors } from '../../utils/getAjvErrors';
 
 import '../../utils/getRandomArrayItem';
 
-const userAlbumsSchema = require('../../data/jsonSchema/userAlbums');
+const userTodosSchema = require('../../data/jsonSchema/userTodos');
 
 describe('JSON Placeholder', () => {
   let response = null;
   let userId = null;
 
-  describe('User albums', () => {
+  describe('User todos', () => {
     beforeAll(async () => {
       userId = await Users.getUsers().then((response) => {
         return response.data.map(({ id }) => id).sample();
       });
 
-      response = await Users.getUserAlbums(userId);
+      response = await Users.getUserTodos(userId);
     });
 
     test('should return http status code 200', async () => { 
@@ -28,11 +28,11 @@ describe('JSON Placeholder', () => {
       expect(response.headers['content-type']).toBe('application/json; charset=utf-8');
     });
   
-    test(`user with id ${userId} should have 10 albums`, async () => {
-      expect(response.data).toHaveLength(10);
+    test(`user with id ${userId} should have 20 todos`, async () => {
+      expect(response.data).toHaveLength(20);
     });
 
-    test('each album should contain correct user id', async () => {
+    test('each todo should contain correct user id', async () => {
       const isContainCorrectUserId = response.data.every(({ userId }) => userId === userId);
       expect(isContainCorrectUserId).toBe(true);
     });
@@ -40,7 +40,7 @@ describe('JSON Placeholder', () => {
     test('should have valid JSON schema', async () => {
       const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
 
-      const valid = ajv.validate(userAlbumsSchema, response.data);
+      const valid = ajv.validate(userTodosSchema, response.data);
       const errorMessage = getAjvErrors(ajv.errors);
 
       expect(valid).toBeValid(errorMessage);
