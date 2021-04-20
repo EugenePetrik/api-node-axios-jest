@@ -6,44 +6,42 @@ import '../../utils/getRandomArrayItem';
 
 const userTodosSchema = require('../../data/jsonSchema/users/userTodos');
 
-describe('JSON Placeholder', () => {
+describe('User todos', () => {
   let response = null;
   let userId = null;
 
-  describe('User todos', () => {
-    beforeAll(async () => {
-      userId = await Users.getUsers().then((response) => {
-        return response.data.map(({ id }) => id).sample();
-      });
-
-      response = await Users.getUserTodos(userId);
+  beforeAll(async () => {
+    userId = await Users.getUsers().then(response => {
+      return response.data.map(({ id }) => id).sample();
     });
 
-    test('should return http status code 200', async () => { 
-      expect(response.status).toBe(200);
-      expect(response.statusText).toBe('OK');
-    });
+    response = await Users.getUserTodos(userId);
+  });
 
-    test('should return content-type header', async () => {
-      expect(response.headers['content-type']).toBe('application/json; charset=utf-8');
-    });
-  
-    test(`user with id ${userId} should have 20 todos`, async () => {
-      expect(response.data).toHaveLength(20);
-    });
+  test('should return http status code 200', async () => {
+    expect(response.status).toBe(200);
+    expect(response.statusText).toBe('OK');
+  });
 
-    test('each todo should contain correct user id', async () => {
-      const isContainCorrectUserId = response.data.every(({ userId }) => userId === userId);
-      expect(isContainCorrectUserId).toBe(true);
-    });
+  test('should return content-type header', async () => {
+    expect(response.headers['content-type']).toBe('application/json; charset=utf-8');
+  });
 
-    test('should have valid JSON schema', async () => {
-      const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
+  test(`user with id ${userId} should have 20 todos`, async () => {
+    expect(response.data).toHaveLength(20);
+  });
 
-      const valid = ajv.validate(userTodosSchema, response.data);
-      const errorMessage = getAjvErrors(ajv.errors);
+  test('each todo should contain correct user id', async () => {
+    const isContainCorrectUserId = response.data.every(({ userId }) => userId === userId);
+    expect(isContainCorrectUserId).toBe(true);
+  });
 
-      expect(valid).toBeValid(errorMessage);
-    });
+  test('should have valid JSON schema', async () => {
+    const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
+
+    const valid = ajv.validate(userTodosSchema, response.data);
+    const errorMessage = getAjvErrors(ajv.errors);
+
+    expect(valid).toBeValid(errorMessage);
   });
 });
