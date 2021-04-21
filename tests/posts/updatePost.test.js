@@ -6,11 +6,12 @@ import { getAjvErrors } from '../../utils/getAjvErrors';
 
 import '../../utils/getRandomArrayItem';
 
-const createPostSchema = require('../../data/jsonSchema/posts/createPost');
+const createPostSchema = require('../../data/jsonSchema/posts/updatePost');
 
-describe('Create post', () => {
+describe('Update post', () => {
   let response = null;
   let userId = null;
+  let postId = null;
 
   const title = faker.lorem.words();
   const body = faker.lorem.sentence();
@@ -20,12 +21,16 @@ describe('Create post', () => {
       return response.data.map(({ id }) => id).sample();
     });
 
-    response = await Posts.createPosts({ title, body, userId });
+    postId = await Posts.getPosts().then(response => {
+      return response.data.map(({ id }) => id).sample();
+    });
+
+    response = await Posts.updatePost(postId, { title, body, userId });
   });
 
-  test('should return http status code 201', async () => {
-    expect(response.status).toBe(201);
-    expect(response.statusText).toBe('Created');
+  test('should return http status code 200', async () => {
+    expect(response.status).toBe(200);
+    expect(response.statusText).toBe('OK');
   });
 
   test('should get content-type header', async () => {
@@ -42,6 +47,10 @@ describe('Create post', () => {
 
   test('should get correct post userId', async () => {
     expect(response.data.userId).toBe(userId);
+  });
+
+  test('should get correct post id', async () => {
+    expect(response.data.id).toBe(postId);
   });
 
   test('should have valid JSON schema', async () => {
