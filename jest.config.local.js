@@ -27,4 +27,11 @@ module.exports = {
   setupFilesAfterEnv: [
     './utils/setupJest.js'
   ],
+  modulePathIgnorePatterns: [
+    '<rootDir>/tests/albums/albumPhotos.test.js',
+    '<rootDir>/tests/posts/createPost.test.js',
+    '<rootDir>/tests/posts/deletePost.test.js',
+    '<rootDir>/tests/posts/patchPost.test.js',
+    '<rootDir>/tests/posts/updatePost.test.js',
+  ],
 };
