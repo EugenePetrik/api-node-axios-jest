@@ -1,10 +1,9 @@
 import Ajv from 'ajv';
+import fs from 'fs';
+import path from 'path';
+import _ from 'lodash';
 import Posts from '../../lib/posts.controller';
 import { getAjvErrors } from '../../utils/getAjvErrors';
-
-import '../../utils/getRandomArrayItem';
-
-const getPostSchema = require('../../data/jsonSchema/posts/getPost');
 
 describe('Get post', () => {
   let response = null;
@@ -12,7 +11,7 @@ describe('Get post', () => {
 
   beforeAll(async () => {
     post = await Posts.getPosts().then(response => {
-      const postData = response.data.map((post) => post).sample();
+      const postData = _.sample(response.data.map(post => post));
 
       return {
         id: postData.id,
@@ -53,7 +52,10 @@ describe('Get post', () => {
   test('should have valid JSON schema', async () => {
     const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
 
-    const valid = ajv.validate(getPostSchema, response.data);
+    const jsonPath = path.resolve(path.join('.', 'data', 'jsonSchema', 'posts', 'getPost.json'));
+    const jsonSchema = JSON.parse(fs.readFileSync(jsonPath));
+
+    const valid = ajv.validate(jsonSchema, response.data);
     const errorMessage = getAjvErrors(ajv.errors);
 
     expect(valid).toBeValid(errorMessage);

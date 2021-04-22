@@ -1,10 +1,9 @@
 import Ajv from 'ajv';
+import fs from 'fs';
+import path from 'path';
+import _ from 'lodash';
 import Users from '../../lib/users.controller';
 import { getAjvErrors } from '../../utils/getAjvErrors';
-
-import '../../utils/getRandomArrayItem';
-
-const userAlbumsSchema = require('../../data/jsonSchema/users/userAlbums');
 
 describe('User albums', () => {
   let response = null;
@@ -12,7 +11,7 @@ describe('User albums', () => {
 
   beforeAll(async () => {
     userId = await Users.getUsers().then(response => {
-      return response.data.map(({ id }) => id).sample();
+      return _.sample(response.data.map(({ id }) => id));
     });
 
     response = await Users.getUserAlbums(userId);
@@ -39,7 +38,10 @@ describe('User albums', () => {
   test('should have valid JSON schema', async () => {
     const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
 
-    const valid = ajv.validate(userAlbumsSchema, response.data);
+    const jsonPath = path.resolve(path.join('.', 'data', 'jsonSchema', 'users', 'userAlbums.json'));
+    const jsonSchema = JSON.parse(fs.readFileSync(jsonPath));
+
+    const valid = ajv.validate(jsonSchema, response.data);
     const errorMessage = getAjvErrors(ajv.errors);
 
     expect(valid).toBeValid(errorMessage);

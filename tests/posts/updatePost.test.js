@@ -1,12 +1,10 @@
 import Ajv from 'ajv';
 import faker from 'faker';
+import fs from 'fs';
+import path from 'path';
 import Users from '../../lib/users.controller';
 import Posts from '../../lib/posts.controller';
 import { getAjvErrors } from '../../utils/getAjvErrors';
-
-import '../../utils/getRandomArrayItem';
-
-const createPostSchema = require('../../data/jsonSchema/posts/updatePost');
 
 describe('Update post', () => {
   let response = null;
@@ -56,7 +54,10 @@ describe('Update post', () => {
   test('should have valid JSON schema', async () => {
     const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
 
-    const valid = ajv.validate(createPostSchema, response.data);
+    const jsonPath = path.resolve(path.join('.', 'data', 'jsonSchema', 'posts', 'updatePost.json'));
+    const jsonSchema = JSON.parse(fs.readFileSync(jsonPath));
+
+    const valid = ajv.validate(jsonSchema, response.data);
     const errorMessage = getAjvErrors(ajv.errors);
 
     expect(valid).toBeValid(errorMessage);

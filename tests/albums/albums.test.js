@@ -1,8 +1,8 @@
 import Ajv from 'ajv';
+import fs from 'fs';
+import path from 'path';
 import Albums from '../../lib/albums.controller';
 import { getAjvErrors } from '../../utils/getAjvErrors';
-
-const albumsSchema = require('../../data/jsonSchema/albums/albums');
 
 describe('Albums', () => {
   let response = null;
@@ -27,7 +27,10 @@ describe('Albums', () => {
   test('should have valid JSON schema', async () => {
     const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
 
-    const valid = ajv.validate(albumsSchema, response.data);
+    const jsonPath = path.resolve(path.join('.', 'data', 'jsonSchema', 'albums', 'albums.json'));
+    const jsonSchema = JSON.parse(fs.readFileSync(jsonPath));
+
+    const valid = ajv.validate(jsonSchema, response.data);
     const errorMessage = getAjvErrors(ajv.errors);
 
     expect(valid).toBeValid(errorMessage);
