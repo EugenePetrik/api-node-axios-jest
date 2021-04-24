@@ -5,7 +5,7 @@ import _ from 'lodash';
 import Posts from '../../lib/posts.controller';
 import { getAjvErrors } from '../../utils/getAjvErrors';
 
-describe('Get post', () => {
+describe('Post', () => {
   let response = null;
   let post = {};
 

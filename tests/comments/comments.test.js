@@ -1,14 +1,14 @@
 import Ajv from 'ajv';
 import fs from 'fs';
 import path from 'path';
-import photos from '../../lib/photos.controller';
+import Comments from '../../lib/comments.controller';
 import { getAjvErrors } from '../../utils/getAjvErrors';
 
-describe('Get photos', () => {
+describe('Comments', () => {
   let response = null;
 
   beforeAll(async () => {
-    response = await photos.getPhotos();
+    response = await Comments.getComments();
   });
 
   test('should return http status code 200', async () => {
@@ -21,13 +21,13 @@ describe('Get photos', () => {
   });
 
   test('should return response body', async () => {
-    expect(response.data).toHaveLength(5000);
+    expect(response.data).toHaveLength(500);
   });
 
   test('should have valid JSON schema', async () => {
     const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
 
-    const jsonPath = path.resolve(path.join('.', 'data', 'jsonSchema', 'photos', 'photos.json'));
+    const jsonPath = path.resolve(path.join('.', 'data', 'jsonSchema', 'comments', 'comments.json'));
     const jsonSchema = JSON.parse(fs.readFileSync(jsonPath));
 
     const valid = ajv.validate(jsonSchema, response.data);
