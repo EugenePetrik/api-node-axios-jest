@@ -3,10 +3,12 @@ module.exports = {
   reporters: [
     'default',
     [
-      'jest-html-reporter', {
-        'pageTitle': 'JSON Placeholder Test Report',
-        'outputPath': './reports/test-report.html',
-      }
+      'jest-html-reporters',
+      {
+        pageTitle: 'JSON Placeholder Test Report',
+        publicPath: './reports',
+        filename: 'report.html',
+      },
     ],
   ],
   moduleFileExtensions: [

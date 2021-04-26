@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "pretest": "mkdirp reports",
     "test": "jest --config jest.config.local.js --colors --testTimeout=50000"
   },
   "keywords": [
@@ -33,10 +32,9 @@
     "faker": "^5.5.3",
     "husky": "^6.0.0",
     "jest": "^26.6.3",
-    "jest-html-reporter": "^3.3.0",
+    "jest-html-reporters": "^2.1.4",
     "lint-staged": "^10.5.4",
     "lodash": "^4.17.21",
-    "mkdirp": "^1.0.4",
     "prettier": "^2.2.1"
   },
   "husky": {
