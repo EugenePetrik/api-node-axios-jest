@@ -2,8 +2,9 @@ import Ajv from 'ajv';
 import faker from 'faker';
 import fs from 'fs';
 import path from 'path';
-import Users from '../../lib/users.controller';
-import Posts from '../../lib/posts.controller';
+import _ from 'lodash';
+import users from '../../lib/users.controller';
+import posts from '../../lib/posts.controller';
 import { getAjvErrors } from '../../utils/getAjvErrors';
 
 describe('Update post', () => {
@@ -15,51 +16,49 @@ describe('Update post', () => {
   const body = faker.lorem.sentence();
 
   beforeAll(async () => {
-    userId = await Users.getUsers().then(response => {
-      return response.data.map(({ id }) => id).sample();
-    });
+    const userIds = await users.getUsers();
+    userId = _.sample(userIds.data.map(({ id }) => id));
 
-    postId = await Posts.getPosts().then(response => {
-      return response.data.map(({ id }) => id).sample();
-    });
+    const postIds = await posts.getPosts();
+    postId = _.sample(postIds.data.map(({ id }) => id));
 
-    response = await Posts.updatePost(postId, { title, body, userId });
+    response = await posts.updatePost(postId, { title, body, userId });
   });
 
-  test('should return http status code 200', async () => {
+  test('should return http status code 200', () => {
     expect(response.status).toBe(200);
     expect(response.statusText).toBe('OK');
   });
 
-  test('should get content-type header', async () => {
+  test('should get content-type header', () => {
     expect(response.headers['content-type']).toBe('application/json; charset=utf-8');
   });
 
-  test('should get correct post title', async () => {
+  test('should get correct post title', () => {
     expect(response.data.title).toBe(title);
   });
 
-  test('should get correct post body', async () => {
+  test('should get correct post body', () => {
     expect(response.data.body).toBe(body);
   });
 
-  test('should get correct post userId', async () => {
+  test('should get correct post userId', () => {
     expect(response.data.userId).toBe(userId);
   });
 
-  test('should get correct post id', async () => {
+  test('should get correct post id', () => {
     expect(response.data.id).toBe(postId);
   });
 
-  test('should have valid JSON schema', async () => {
+  test('should have valid JSON schema', () => {
     const ajv = new Ajv({ status: true, logger: console, allErrors: true, verbose: true });
 
     const jsonPath = path.resolve(path.join('.', 'data', 'jsonSchema', 'posts', 'updatePost.json'));
     const jsonSchema = JSON.parse(fs.readFileSync(jsonPath));
 
-    const valid = ajv.validate(jsonSchema, response.data);
+    const isValid = ajv.validate(jsonSchema, response.data);
     const errorMessage = getAjvErrors(ajv.errors);
 
-    expect(valid).toBeValid(errorMessage);
+    expect(isValid).toBeValid(errorMessage);
   });
 });

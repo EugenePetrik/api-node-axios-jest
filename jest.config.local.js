@@ -30,9 +30,6 @@ module.exports = {
     './utils/setupJest.js'
   ],
   modulePathIgnorePatterns: [
-    '<rootDir>/tests/posts/createPost.test.js',
-    '<rootDir>/tests/posts/deletePost.test.js',
-    '<rootDir>/tests/posts/patchPost.test.js',
-    '<rootDir>/tests/posts/updatePost.test.js',
+    // '<rootDir>/tests/posts/updatePost.test.js',
   ],
 };
