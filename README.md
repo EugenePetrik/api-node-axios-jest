@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/EugenePetrik/api-node-axios-jest/tree/master.svg?style=svg)](https://circleci.com/gh/EugenePetrik/api-node-axios-jest/tree/main)
+[![CircleCI](https://circleci.com/gh/EugenePetrik/api-node-axios-jest/tree/main.svg?style=svg)](https://circleci.com/gh/EugenePetrik/api-node-axios-jest/tree/main)
 
 ## Sample project for API testing
 
