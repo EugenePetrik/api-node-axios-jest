@@ -37,7 +37,7 @@ jobs:
       - <<: *save_npm_cache
 
       - run:
-          name: Running cypress tests
+          name: Running tests
           command: npm test
 
       - store_artifacts:
