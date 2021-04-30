@@ -2,17 +2,20 @@ name: Run API Tests with Jest
 
 on:
   push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   schedule:
     - cron: '0 0 * * *'
 
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
     timeout-minutes: 5
 
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         node-version: [15.x]
 
     steps:
