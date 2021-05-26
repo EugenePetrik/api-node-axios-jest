@@ -1,5 +1,8 @@
 module.exports = {
   testEnvironment: 'node',
+  setupFiles: ['dotenv/config'],
+  testTimeout: 60000,
+  maxWorkers: 1,
   reporters: [
     'default',
     [
@@ -11,24 +14,13 @@ module.exports = {
       },
     ],
   ],
-  moduleFileExtensions: [
-    'js',
-    'json',
-  ],
+  moduleFileExtensions: ['js', 'json'],
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
   },
-  testMatch: [
-    '**/tests/**/*.test.js',
-  ],
-  globals: {
-    url: '',
-    testTimeout: 50000,
-  },
+  testMatch: ['**/tests/**/*.test.js'],
   verbose: true,
-  setupFilesAfterEnv: [
-    './utils/setupJest.js'
-  ],
+  setupFilesAfterEnv: ['./utils/setupJest.js'],
   modulePathIgnorePatterns: [
     // '<rootDir>/tests/posts/updatePost.test.js',
   ],
